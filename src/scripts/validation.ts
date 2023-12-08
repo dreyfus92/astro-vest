@@ -1,4 +1,5 @@
-import suite from "./vest-suite";
+import type { SuiteResult } from 'vest';
+import suite from "./vest-tests";
 import classnames from "vest/classnames";
 
 const form = document.querySelector("form");
@@ -39,16 +40,20 @@ const handleSubmit = async () => {
     // const formData = new FormData(formValues);
 
     // Post the data to the server
-    fetch("/api/form", {
+    const response = await fetch("/api/form", {
         method: "POST",
         body: JSON.stringify(formValues),
         headers: {
             "Content-Type": "application/json",
         },
     });
+
+    if (response.redirected) {
+        window.location.assign(response.url);
+    }
 };
-//@ts-ignore
-const handleResult = (result) => {
+
+const handleResult = (result: SuiteResult<string, string>) => {
     const cn = classnames(result, {
         valid: "success",
         invalid: "error",
@@ -77,8 +82,8 @@ const handleResult = (result) => {
                 ...result.getErrors(name),
                 ...result.getWarnings(name),
             ];
-            // @ts-ignore
-            msg.innerText = messages[0] || "";
+            // msg.innerText = messages[0] || "";
+            msg.innerHTML = messages[0] || "";
         }
     }
 };

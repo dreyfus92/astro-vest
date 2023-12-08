@@ -1,10 +1,10 @@
 import type { APIContext, APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request, redirect }: APIContext) => {
-    //Your logic here
     const reqBody = await request.json();
 
-    console.log(reqBody);
+    console.log(reqBody)
+    // Handle reqBody to write messages in DB or something
     if (reqBody.name && reqBody.email && reqBody.message) {
         //Redirect to thank you page
         return redirect('/thank-you', 302)
